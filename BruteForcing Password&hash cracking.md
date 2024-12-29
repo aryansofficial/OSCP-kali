@@ -2,6 +2,7 @@
 
 ## Table of Contents
 
+0. [What hash do you have](#what-hash-do-you-have)
 1. [Introduction](#introduction)
 2. [Password Cracking Basics](#password-cracking-basics)
    - [Wordlists](#wordlists)
@@ -34,7 +35,13 @@
    - [Cracking SSH Password Keys](#cracking-ssh-password-keys)
 9. [Tools and Resources](#tools-and-resources)
 ---
-
+## What hash do you have
+- **online tool**
+  https://www.tunnelsup.com/hash-analyzer/
+- **hash**
+  https://www.kali.org/tools/hash-identifier/
+-- **Finding hash id for hashcat cracking**
+  https://hashcat.net/wiki/doku.php?id=example_hashes
 ## Introduction
 This cheat sheet covers extensive techniques for password cracking and brute forcing using tools like Hydra and Hashcat. It includes real-life examples, explanations, and use cases to help ethical hackers in penetration testing and real-world engagements.
 
