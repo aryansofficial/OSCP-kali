@@ -32,7 +32,8 @@
     - [Docker](#docker)
 13. [Custom Exploits](#custom-exploits)
 14. [Checklist for OSCP](#checklist-for-oscp)
-15. [References](#references)
+15. [My Experience beyond this list](#My-Experience-beyond-this-list)
+16. [References](#references)
 
 ## Introduction
 Privilege escalation is a critical step in penetration testing. This guide is tailored for OSCP preparation and covers various techniques to escalate privileges on Linux systems.
@@ -263,6 +264,34 @@ Sometimes, custom scripts or binaries may have vulnerabilities. Review custom so
 - Check cron jobs and PATH abuse.
 - Search for writable configuration files.
 - Hunt for passwords in files and history.
+
+## My Experience Beyond This List
+
+In the TryHackMe room [Blog](https://tryhackme.com/r/room/blog), I encountered an interesting privilege escalation scenario. Running the command:  
+```bash
+find / -perm -u=s -type f 2>/dev/null
+```  
+listed several SUID binaries. Among them was a file named `checker` located at `/usr/sbin/checker`. This file wasn’t documented in GTFOBins and was custom-made by the developer. Surprisingly, it could be exploited to run a root shell (`bash`) even though it seemed like a random program with no apparent purpose.
+
+### Lesson Learned:
+I didn’t solve this challenge without checking the solution. This taught me an important lesson: **Always thoroughly enumerate and inspect every file**.
+
+When I ran and analyzed `checker` with `ltrace`, I found the following:  
+```bash
+ltrace checker
+getenv("admin") = nil
+puts("Not an Admin")
+```
+
+The program checked for an `admin` environment variable. If this variable existed and met certain conditions, it granted root access.
+
+### Key Takeaway:
+Pay close attention to the output of every command and file, especially unknown ones. In this case, the best approach was to dig into files I didn’t recognize.
+
+On a regular system, many SUID files will appear when running `find` commands, making it hard to identify what’s useful. However, in CTF challenges, focus on unusual or unexpected files. Enumerating these thoroughly is critical for success.
+
+
+
 
 ## References
 - [GTFOBins](https://gtfobins.github.io)
