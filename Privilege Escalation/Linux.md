@@ -67,7 +67,7 @@ printenv
 - [LinPEAS](https://github.com/carlospolop/PEASS-ng) 
 - [LinEnum](https://github.com/rebootuser/LinEnum)
 - [Linux Exploit Suggester](https://github.com/mzet-/linux-exploit-suggester)
-
+- [Enum For Linux Ng](https://github.com/cddmp/enum4linux-ng)
 ## Kernel Exploits
 Identify kernel version using `uname -r` and search for public exploits:
 
@@ -268,3 +268,4 @@ Sometimes, custom scripts or binaries may have vulnerabilities. Review custom so
 - [GTFOBins](https://gtfobins.github.io)
 - [PEASS-ng](https://github.com/carlospolop/PEASS-ng)
 - [Linux Exploit Suggester](https://github.com/mzet-/linux-exploit-suggester)
+- [Enum For Linux Ng](https://github.com/cddmp/enum4linux-ng)
