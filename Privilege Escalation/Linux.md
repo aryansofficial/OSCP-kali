@@ -33,7 +33,8 @@
 13. [Custom Exploits](#custom-exploits)
 14. [Checklist for OSCP](#checklist-for-oscp)
 15. [My Experience beyond this list](#My-Experience-beyond-this-list)
-16. [References](#references)
+    - [You many miss something (suid executable) because there are too many things to look at](You-many-miss-something-(suid-executable)-because-there-are-too-many-things-to-look-at)
+17. [References](#references)
 
 ## Introduction
 Privilege escalation is a critical step in penetration testing. This guide is tailored for OSCP preparation and covers various techniques to escalate privileges on Linux systems.
@@ -266,7 +267,7 @@ Sometimes, custom scripts or binaries may have vulnerabilities. Review custom so
 - Hunt for passwords in files and history.
 
 ## My Experience Beyond This List
-
+#### You many miss something (suid executable) because there are too many things to look at
 In the TryHackMe room [Blog](https://tryhackme.com/r/room/blog), I encountered an interesting privilege escalation scenario. Running the command:  
 ```bash
 find / -perm -u=s -type f 2>/dev/null
