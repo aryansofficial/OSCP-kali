@@ -275,6 +275,7 @@ find / -perm -u=s -type f 2>/dev/null
 listed several SUID binaries. Among them was a file named `checker` located at `/usr/sbin/checker`. This file wasn’t documented in GTFOBins and was custom-made by the developer. Surprisingly, it could be exploited to run a root shell (`bash`) even though it seemed like a random program with no apparent purpose.
 
 ### Lesson Learned:
+#### You many miss something (suid executable) because there are too many things to look at
 I didn’t solve this challenge without checking the solution. This taught me an important lesson: **Always thoroughly enumerate and inspect every file**.
 
 When I ran and analyzed `checker` with `ltrace`, I found the following:  
