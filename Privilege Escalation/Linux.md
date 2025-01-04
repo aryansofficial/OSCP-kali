@@ -35,6 +35,7 @@
 15. [My Experience beyond this list](#My-Experience-beyond-this-list)
     - [You many miss something (suid executable) because there are too many things to look at](You-many-miss-something-(suid-executable)-because-there-are-too-many-things-to-look-at)
     - [important things for systemctl](important-things-for-systemctl)
+    - [CVE-2019-18634](CVE-2019-18634)
 17. [References](#references)
 
 ## Introduction
@@ -356,6 +357,10 @@ Finally, gain root access:
 ```bash
 sudo su root
 ```
+[CVE-2019-18634] CVE-2019-18634 is a vulnerability in sudo that affects versions prior to 1.8.26.
+
+check sudo version => sudo --version
+
 ### Key Takeaway:
 Pay close attention to the output of every command and file, especially unknown ones. In this case, the best approach was to dig into files I didn’t recognize.
 
