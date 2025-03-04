@@ -1,6 +1,8 @@
 # 🥔 Windows Potato Exploit List (New & Old)
 
 This document contains a list of all **Potato-style privilege escalation exploits** for Windows, categorized by **old and new exploits** along with their applicable Windows versions.
+Keep in mind that binaries for X86-based PC (32-bit architecture) and X64-based PC (64-bit architecture) are different.
+
 ## 📜 Exploit List
 
 | **Exploit Name**       | **Status** | **Windows Versions** | **Server Versions** | **Notes** |
