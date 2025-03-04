@@ -1,21 +1,20 @@
 # 🥔 Windows Potato Exploit List (New & Old)
 
 This document contains a list of all **Potato-style privilege escalation exploits** for Windows, categorized by **old and new exploits** along with their applicable Windows versions.
-
 ## 📜 Exploit List
 
-| **Exploit Name**       | **Status** | **Windows Versions** | **Notes** |
-|------------------------|-----------|----------------------|-----------|
-| **HotPotato**          | 🛑 Old    | Windows 7 - Windows 10 (1607) | Exploits NTLM relay via WPAD. **No longer effective on modern Windows.** |
-| **RottenPotato**       | 🛑 Old    | Windows 7 - Windows 10 | Uses NTLM reflection attack. Replaced by JuicyPotato. |
-| **JuicyPotato**        | 🛑 Old    | Windows 7 - Windows 10 (1809) | Uses DCOM & CLSID. **Patched in Windows 10 1903+.** |
-| **JuicyPotatoNG**      | ✅ New    | Windows 10 1903+ - Windows 11 | Updated JuicyPotato for modern Windows. Requires valid CLSID. |
-| **RoguePotato**        | 🛑 Old    | Windows 10 (up to 21H1), Windows Server 2019 | Uses fake RPC backconnect. **Patched in Windows 10 21H2+.** |
-| **GodPotato**          | ✅ New    | Windows 10 & Windows 11 | Bypasses RPC filtering to get SYSTEM. Works on newer Windows versions. |
-| **SweetPotato**        | ✅ New    | Windows 7 - Windows 10 (1809) | Alternative to JuicyPotato, does not require DCOM. |
-| **PrintSpoofer**       | ✅ New    | Windows 10 & Windows 11 (If Print Spooler is running) | Exploits SeImpersonatePrivilege using Print Spooler. |
-| **BadPotato**          | ✅ New    | Windows 10, Windows 11 | Similar to RoguePotato but works on newer versions. |
-| **SherlockPotato**     | ✅ New    | Windows 10 & Windows 11 | Another variation using named pipes and RPC. |
+| **Exploit Name**       | **Status** | **Windows Versions** | **Server Versions** | **Notes** |
+|------------------------|-----------|----------------------|----------------------|-----------|
+| **HotPotato**          | 🛑 Old    | Windows 7 - Windows 10 (1607) | Windows Server 2008 R2 - 2016 | Exploits NTLM relay via WPAD. **No longer effective on modern Windows.** |
+| **RottenPotato**       | 🛑 Old    | Windows 7 - Windows 10 | Windows Server 2008 R2 - 2016 | Uses NTLM reflection attack. **Replaced by JuicyPotato.** |
+| **JuicyPotato**        | 🛑 Old    | Windows 7 - Windows 10 (1809) | Windows Server 2008 R2 - 2019 | Uses **DCOM & CLSID**. **Patched in Windows 10 1903+ and Server 2022.** |
+| **JuicyPotatoNG**      | ✅ New    | Windows 10 1903+ - Windows 11 | Windows Server 2016 - 2022 | Updated JuicyPotato for modern Windows. **Requires a valid CLSID.** |
+| **RoguePotato**        | 🛑 Old    | Windows 10 (up to 21H1) | Windows Server 2016 - 2019 | Uses fake RPC backconnect. **Patched in Windows 10 21H2+ and Server 2022.** |
+| **GodPotato**          | ✅ New    | Windows 10 & Windows 11 | Windows Server 2016 - 2022 | Bypasses **RPC filtering** to get SYSTEM. Works on newer Windows versions. |
+| **SweetPotato**        | ✅ New    | Windows 7 - Windows 10 (1809) | Windows Server 2008 R2 - 2019 | Alternative to JuicyPotato, **does not require DCOM**. |
+| **PrintSpoofer**       | ✅ New    | Windows 10 & Windows 11 (If Print Spooler is running) | Windows Server 2016 - 2022 | Exploits **SeImpersonatePrivilege** using **Print Spooler**. |
+| **BadPotato**          | ✅ New    | Windows 10, Windows 11 | Windows Server 2016 - 2022 | Similar to RoguePotato but works on newer versions. |
+| **SherlockPotato**     | ✅ New    | Windows 10 & Windows 11 | Windows Server 2016 - 2022 | Uses **named pipes and RPC** for privilege escalation. |
 
 ---
 Do not forget to check for PowerShell implementation of these attacks.
