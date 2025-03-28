@@ -204,6 +204,22 @@ impacket-secretsdump -just-dc-user dave corp.com/jeffadmin:"P@ssw0rd!"@192.168.5
 ```
 
 ---
+## **Relevant Ports**
+
+|Protocol|Port|
+|---|---|
+|LDAP|389|
+|LDAPS|636|
+|SMB|445|
+|Kerberos|88|
+|WinRM|5985, 5986|
+|MSSQL|1433|
+|RDP|3389|
+|DNS|53|
+|RPC|135|
+|Global Catalog|3268, 3269|
+
+---
 
 ## **Summary**
 
