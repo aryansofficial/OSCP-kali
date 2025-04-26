@@ -11,7 +11,7 @@ CYAN='\033[0;36m'
 NC='\033[0m'  # No Color
 
 # Secret pattern (expanded)
-SECRET_PATTERN="*user*|password|pass|passwd|secret|api[_-]?key|token|auth|credential|session|bearer|access[_-]?key|private[_-]?key|aws[_-]?key"
+SECRET_PATTERN="username|*user*|password|pass|passwd|secret|api[_-]?key|token|auth|credential|session|bearer|access[_-]?key|private[_-]?key|aws[_-]?key"
 
 if [ -z "$1" ]; then
     echo -e "${RED}[!] Usage: $0 /path/to/.git${NC}"
