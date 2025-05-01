@@ -1,0 +1,1 @@
+ Get-ChildItem -Path C:\ -Recurse -Directory -Force -ErrorAction SilentlyContinue | Where-Object { Test-Path "$($_.FullName)\.git" } | ForEach-Object { if (git -C $_.FullName rev-parse --is-inside-work-tree 2>$null) { "$($_.FullName)\.git" } }
