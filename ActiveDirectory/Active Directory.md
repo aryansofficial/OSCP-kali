@@ -1,4 +1,4 @@
-## What is Active Directory (used in windows)
+## What is Active Directory
 
 - `Active Directory is just a login service on a network. A lot important things are found in attacking active directory. Important for interviews.
 - Active Directory can be seen like a phone book. All the addresses and information is found in this phone book. U can say that this information is objects.
